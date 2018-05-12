@@ -1,5 +1,5 @@
 const assert = require('assert')
-const { tokenizer, parser } = require('../index')
+const { tokenizer, parser, traverser } = require('../index')
 const { compose, trace } = require('../util')
 
 const str = '(add 2 (subtract 4 2))'
@@ -46,10 +46,32 @@ assert.deepEqual(
 
 assert.deepEqual(
     compose(
-        trace('ast'),
+        // trace('ast'),
         parser,
     )(tokens),
     ast,
 )
+
+const arr = []
+compose(
+    // trace('ast'),
+    ast => traverser(ast, {
+        Program(node, parent) {
+            arr.push(node.type)
+        },
+        CallExpression(node, parent) {
+            arr.push(node.type)
+        },
+        NumberLiteral(node, parent) {
+            arr.push(node.type)
+        }
+    }),
+)(ast)
+
+assert.deepEqual(
+    arr,
+    ['Program', 'CallExpression', 'NumberLiteral', 'CallExpression', 'NumberLiteral', 'NumberLiteral'],
+)
+
 
 console.log('testing...passed')
