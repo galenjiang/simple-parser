@@ -1,5 +1,5 @@
 const assert = require('assert')
-const { tokenizer, parser, traverser } = require('../index')
+const { tokenizer, parser, traverser, transformer } = require('../index')
 const { compose, trace } = require('../util')
 
 const str = '(add 2 (subtract 4 2))'
@@ -33,6 +33,37 @@ const ast = {
                 value: '2'
             }]
         }]
+    }]
+}
+
+const newAst = {
+    type: 'Program',
+    body: [{
+        type: 'ExpressionStatement',
+        expression: {
+            type: 'CallExpression',
+            callee: {
+                type: 'Identifier',
+                name: 'add'
+            },
+            arguments: [{
+                type: 'NumberLiteral',
+                value: '2'
+            }, {
+                type: 'CallExpression',
+                callee: {
+                    type: 'Identifier',
+                    name: 'subtract'
+                },
+                arguments: [{
+                    type: 'NumberLiteral',
+                    value: '4'
+                }, {
+                    type: 'NumberLiteral',
+                    value: '2'
+                }]
+            }]
+        }
     }]
 }
 
@@ -71,6 +102,14 @@ compose(
 assert.deepEqual(
     arr,
     ['Program', 'CallExpression', 'NumberLiteral', 'CallExpression', 'NumberLiteral', 'NumberLiteral'],
+)
+
+assert.deepEqual(
+    compose(
+        trace('newAst'),
+        transformer,
+    )(ast),
+    newAst,
 )
 
 
