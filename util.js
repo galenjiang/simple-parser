@@ -24,6 +24,10 @@ function reduce(iterator, accumulation) {
     }
 }
 
+function join(joint) {
+    return (iterable) => iterable.join(joint)
+}
+
 function trace(tag) {
     return (res) => {
         console.log(`${tag}: ${util.inspect(res, {
@@ -39,4 +43,5 @@ module.exports = {
     each,
     map,
     reduce,
+    join,
 }

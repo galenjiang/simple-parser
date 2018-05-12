@@ -1,5 +1,5 @@
 const assert = require('assert')
-const { tokenizer, parser, traverser, transformer } = require('../index')
+const { tokenizer, parser, traverser, transformer, codeGenerator } = require('../index')
 const { compose, trace } = require('../util')
 
 const str = '(add 2 (subtract 4 2))'
@@ -67,6 +67,8 @@ const newAst = {
     }]
 }
 
+const cStyle = 'add(2, subtract(4, 2));'
+
 assert.deepEqual(
     compose(
         // trace('tokens'),
@@ -106,10 +108,18 @@ assert.deepEqual(
 
 assert.deepEqual(
     compose(
-        trace('newAst'),
+        // trace('newAst'),
         transformer,
     )(ast),
     newAst,
+)
+
+assert.equal(
+    compose(
+        // trace('newAst'),
+        codeGenerator,
+    )(newAst),
+    cStyle,
 )
 
 
