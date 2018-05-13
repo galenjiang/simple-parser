@@ -15,4 +15,6 @@ assert.deepEqual(compose(
     i => i + 1
 )(2), 9)
 
+compiler
+
 console.log('testing...passed')

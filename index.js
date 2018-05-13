@@ -3,6 +3,7 @@ const parser = require('./parser')
 const traverser = require('./traverser')
 const transformer = require('./transformer')
 const codeGenerator = require('./codeGenerator')
+const compiler = require('./compiler')
 
 module.exports = {
     tokenizer,
@@ -10,4 +11,5 @@ module.exports = {
     traverser,
     transformer,
     codeGenerator,
+    compiler,
 }

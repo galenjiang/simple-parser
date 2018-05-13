@@ -1,5 +1,5 @@
 const assert = require('assert')
-const { tokenizer, parser, traverser, transformer, codeGenerator } = require('../index')
+const { tokenizer, parser, traverser, transformer, codeGenerator, compiler } = require('../index')
 const { compose, trace } = require('../util')
 
 const str = '(add 2 (subtract 4 2))'
@@ -120,6 +120,13 @@ assert.equal(
         codeGenerator,
     )(newAst),
     cStyle,
+)
+
+assert.equal(
+    compose(
+        compiler
+    )(str),
+    cStyle
 )
 
 
